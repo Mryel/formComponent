@@ -5,7 +5,13 @@
 </template>
 
 <script>
+/* eslint-disable */
 export default {
+    provide () {
+        return {
+            form: this
+        }
+    },
     name: 'iForm',
     props: {
         model: {
@@ -31,6 +37,32 @@ export default {
                 this.fields.splice(this.fields.indexOf(field), 1)
             }
         })
+    },
+    methods: {
+        resetFields () {
+            this.fields.forEach(field => {
+                field.resetField()
+            })
+        },
+        validate (callback) {
+            return new Promise(resolve => {
+                let valid = true
+                let count = 0
+                this.fields.forEach(field => {
+                    field.validate('', errors => {
+                        if (errors) {
+                            valid = false
+                        }
+                        if (++count === this.fields.length) {
+                            resolve(valid)
+                            if (typeof callback === 'function') {
+                                callback(valid)
+                            }
+                        }
+                    })
+                })
+            })
+        }
     }
 }
 </script>

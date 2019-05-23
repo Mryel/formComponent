@@ -8,6 +8,7 @@
 </template>
 
 <script>
+/* eslint-disable */
 import Emitter from '../../mixins/emitter.js'
 export default {
     name: 'iInput',
